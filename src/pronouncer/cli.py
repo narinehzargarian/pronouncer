@@ -4,7 +4,7 @@
 import argparse
 import sys
 
-from pronouncer.dictionary import lookup_word, play_pronunciation, speak_word
+from pronouncer.dictionary import lookup_word, play_pronunciation, speak_word, expand_abbreviation
 
 
 def main():
@@ -36,8 +36,12 @@ def lookup_and_display(word: str, play_audio: bool = False):
     result = lookup_word(word)
 
     if result is None:
+        expanded, is_abbrev = expand_abbreviation(word)
         print(f"\n  {word}")
-        print(f"  (not in dictionary - using text-to-speech)")
+        if is_abbrev:
+            print(f"  \"{expanded}\"")
+        else:
+            print(f"  (not in dictionary - using text-to-speech)")
         print()
         if play_audio:
             speak_word(word)

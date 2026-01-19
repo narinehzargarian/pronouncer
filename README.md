@@ -7,6 +7,7 @@ A command-line tool to get pronunciation of English words, company names, and te
 - Look up phonetic pronunciation (IPA) for English words
 - Play audio pronunciation
 - Text-to-speech fallback for words not in the dictionary (company names, brand names, etc.)
+- Expands common abbreviations and slang (iykyk, lmao, tbh, etc.)
 - Interactive mode for looking up multiple words
 
 ## Installation
@@ -52,6 +53,13 @@ For words not in the dictionary:
 ```
   nvidia
   (not in dictionary - using text-to-speech)
+```
+
+For abbreviations and slang:
+
+```
+  iykyk
+  "if you know you know"
 ```
 
 ## Requirements

@@ -8,6 +8,66 @@ import requests
 
 API_BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en"
 
+# Common abbreviations and their expansions
+ABBREVIATIONS = {
+    "iykyk": "if you know you know",
+    "lmao": "laughing my ass off",
+    "lmfao": "laughing my fucking ass off",
+    "rofl": "rolling on the floor laughing",
+    "tbh": "to be honest",
+    "imo": "in my opinion",
+    "imho": "in my humble opinion",
+    "fyi": "for your information",
+    "brb": "be right back",
+    "gtg": "got to go",
+    "ttyl": "talk to you later",
+    "omg": "oh my god",
+    "idk": "i don't know",
+    "nvm": "never mind",
+    "btw": "by the way",
+    "afk": "away from keyboard",
+    "irl": "in real life",
+    "smh": "shaking my head",
+    "fomo": "fear of missing out",
+    "yolo": "you only live once",
+    "goat": "greatest of all time",
+    "tl;dr": "too long didn't read",
+    "tldr": "too long didn't read",
+    "asap": "as soon as possible",
+    "eta": "estimated time of arrival",
+    "diy": "do it yourself",
+    "faq": "frequently asked questions",
+    "aka": "also known as",
+    "rn": "right now",
+    "fr": "for real",
+    "ngl": "not gonna lie",
+    "ong": "on god",
+    "istg": "i swear to god",
+    "wdym": "what do you mean",
+    "hmu": "hit me up",
+    "lmk": "let me know",
+    "np": "no problem",
+    "ty": "thank you",
+    "yw": "you're welcome",
+    "pov": "point of view",
+    "sus": "suspicious",
+    "mid": "mid",
+    "bussin": "bussin",
+    "slay": "slay",
+    "periodt": "period",
+    "lowkey": "low key",
+    "highkey": "high key",
+    "vibe": "vibe",
+    "bet": "bet",
+    "cap": "cap",
+    "no cap": "no cap",
+    "gg": "good game",
+    "ez": "easy",
+    "pog": "play of the game",
+    "w": "win",
+    "l": "loss",
+}
+
 
 class Definition(TypedDict):
     part_of_speech: str
@@ -128,6 +188,18 @@ def _play_with_playsound(path: str) -> bool:
         return False
 
 
+def expand_abbreviation(word: str) -> tuple[str, bool]:
+    """Expand an abbreviation if known.
+
+    Returns:
+        Tuple of (expanded text, was_expanded)
+    """
+    lower = word.lower()
+    if lower in ABBREVIATIONS:
+        return ABBREVIATIONS[lower], True
+    return word, False
+
+
 def speak_word(word: str) -> bool:
     """Speak a word using text-to-speech (macOS say command).
 
@@ -138,8 +210,12 @@ def speak_word(word: str) -> bool:
         True if speech succeeded, False otherwise
     """
     import subprocess
+
+    # Expand abbreviations before speaking
+    text, _ = expand_abbreviation(word)
+
     try:
-        subprocess.run(["say", word], check=True)
+        subprocess.run(["say", text], check=True)
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
