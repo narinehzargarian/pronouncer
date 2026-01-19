@@ -1,0 +1,19 @@
+[project]
+name = "pronouncer"
+version = "0.1.0"
+description = "CLI tool to get pronunciation of English words"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.28.0",
+]
+
+[project.scripts]
+pronouncer = "pronouncer.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
